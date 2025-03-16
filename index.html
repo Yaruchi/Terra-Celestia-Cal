@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dual Calendar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background: linear-gradient(to right, #a8e6a3, #a3d5f7);
+        }
+        .calendar-container {
+            display: flex;
+            color: #333;
+            position: relative;
+            overflow: hidden;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .calendar {
+            width: 500px;
+            border: 2px solid #444;
+            border-radius: 10px;
+            box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            text-align: center;
+        }
+        .ignis {
+            background: #fce3e3;
+            border-color: #f25656;
+        }
+        .pyros {
+            background: #fbe3e3;
+            border-color: #f28c56;
+        }
+        .eos {
+            background: #eafbea;
+            border-color: #6fcf97;
+        }
+        .astraea {
+            background: #e3f5fc;
+            border-color: #56ccf2;
+        }
+        .cryon {
+            background: #e3f3fc;
+            border-color: #56a2f2;
+        }
+        .glacius {
+            background: #e3e3fc;
+            border-color: #5656f2;
+        }
+        .calendar-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        .calendar-header button {
+            background: #444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .calendar-header button:hover {
+            background: #666;
+        }
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            font-weight: bold;
+            margin-bottom: 5px;
+            background: #e0e0e0;
+        }
+        .weekdays div {
+            padding: 5px;
+            border: 1px solid #999;
+            border-radius: 5px;
+            background-color: white;
+            font-weight: bold;
+            color: #333;
+        }
+        .days-container {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 5px;
+            padding: 10px;
+            background: #e0e0e0;
+            border-radius: 10px;
+        }
+        .day {
+            padding: 15px;
+            border: 1px solid #999;
+            border-radius: 5px;
+            background-color: white;
+            font-weight: bold;
+            color: #333;
+        }
+        .controls {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dual Calendar System</h1>
+    <div class="calendar-container">
+        <div class="calendar ignis">
+            <div class="calendar-header">
+                <h2>Ignis</h2>
+                <div>
+                    <button onclick="changeMonth(-1, 'ignis')">&#9665;</button>
+                    <span id="ignis-month-year">Month | Year</span>
+                    <button onclick="changeMonth(1, 'ignis')">&#9655;</button>
+                </div>
+                <div id="ignis-month-name">Month Name</div>
+            </div>
+            <div class="weekdays" id="ignis-weekdays"></div>
+            <div class="days-container" id="ignis-days"></div>
+            <div class="controls">
+                <label for="monthInput1">Month:</label>
+                <input type="number" id="monthInput1" value="1" min="1" max="5" onchange="setDate('ignis')">
+                <label for="yearInput1">Year:</label>
+                <input type="number" id="yearInput1" value="0" onchange="setDate('ignis')">
+            </div>
+        </div>
+        <div class="calendar pyros">
+            <div class="calendar-header">
+                <h2>Pyros</h2>
+                <div>
+                    <button onclick="changeMonth(-1, 'pyros')">&#9665;</button>
+                    <span id="pyros-month-year">Month | Year</span>
+                    <button onclick="changeMonth(1, 'pyros')">&#9655;</button>
+                </div>
+                <div id="pyros-month-name">Month Name</div>
+            </div>
+            <div class="weekdays" id="pyros-weekdays"></div>
+            <div class="days-container" id="pyros-days"></div>
+            <div class="controls">
+                <label for="monthInput2">Month:</label>
+                <input type="number" id="monthInput2" value="1" min="1" max="8" onchange="setDate('pyros')">
+                <label for="yearInput2">Year:</label>
+                <input type="number" id="yearInput2" value="0" onchange="setDate('pyros')">
+            </div>
+        </div>
+        <div class="calendar eos">
+            <div class="calendar-header">
+                <h2>Eos</h2>
+                <div>
+                    <button onclick="changeMonth(-1, 'eos')">&#9665;</button>
+                    <span id="eos-month-year">Month | Year</span>
+                    <button onclick="changeMonth(1, 'eos')">&#9655;</button>
+                </div>
+                <div id="eos-month-name">Month Name</div>
+            </div>
+            <div class="weekdays" id="eos-weekdays"></div>
+            <div class="days-container" id="eos-days"></div>
+            <div class="controls">
+                <label for="monthInput3">Month:</label>
+                <input type="number" id="monthInput3" value="1" min="1" max="12" onchange="setDate('eos')">
+                <label for="yearInput3">Year:</label>
+                <input type="number" id="yearInput3" value="0" onchange="setDate('eos')">
+            </div>
+        </div>
+        <div class="calendar astraea">
+            <div class="calendar-header">
+                <h2>Astraea</h2>
+                <div>
+                    <button onclick="changeMonth(-1, 'astraea')">&#9665;</button>
+                    <span id="astraea-month-year">Month | Year</span>
+                    <button onclick="changeMonth(1, 'astraea')">&#9655;</button>
+                </div>
+                <div id="astraea-month-name">Month Name</div>
+            </div>
+            <div class="weekdays" id="astraea-weekdays"></div>
+            <div class="days-container" id="astraea-days"></div>
+            <div class="controls">
+                <label for="monthInput4">Month:</label>
+                <input type="number" id="monthInput4" value="1" min="1" max="15" onchange="setDate('astraea')">
+                <label for="yearInput4">Year:</label>
+                <input type="number" id="yearInput4" value="0" onchange="setDate('astraea')">
+            </div>
+        </div>
+        <div class="calendar cryon">
+            <div class="calendar-header">
+                <h2>Cryon</h2>
+                <div>
+                    <button onclick="changeMonth(-1, 'cryon')">&#9665;</button>
+                    <span id="cryon-month-year">Month | Year</span>
+                    <button onclick="changeMonth(1, 'cryon')">&#9655;</button>
+                </div>
+                <div id="cryon-month-name">Month Name</div>
+            </div>
+            <div class="weekdays" id="cryon-weekdays"></div>
+            <div class="days-container" id="cryon-days"></div>
+            <div class="controls">
+                <label for="monthInput5">Month:</label>
+                <input type="number" id="monthInput5" value="1" min="1" max="20" onchange="setDate('cryon')">
+                <label for="yearInput5">Year:</label>
+                <input type="number" id="yearInput5" value="0" onchange="setDate('cryon')">
+            </div>
+        </div>
+        <div class="calendar glacius">
+            <div class="calendar-header">
+                <h2>Glacius</h2>
+                <div>
+                    <button onclick="changeMonth(-1, 'glacius')">&#9665;</button>
+                    <span id="glacius-month-year">Month | Year</span>
+                    <button onclick="changeMonth(1, 'glacius')">&#9655;</button>
+                </div>
+                <div id="glacius-month-name">Month Name</div>
+            </div>
+            <div class="weekdays" id="glacius-weekdays"></div>
+            <div class="days-container" id="glacius-days"></div>
+            <div class="controls">
+                <label for="monthInput6">Month:</label>
+                <input type="number" id="monthInput6" value="1" min="1" max="26" onchange="setDate('glacius')">
+                <label for="yearInput6">Year:</label>
+                <input type="number" id="yearInput6" value="0" onchange="setDate('glacius')">
+            </div>
+        </div>
+    </div>
+    <script>
+        const ignisMonths = ["Ignis I", "Ignis II", "Ignis III", "Ignis IV", "Ignis V"];
+        const pyrosMonths = ["Pyros I", "Pyros II", "Pyros III", "Pyros IV", "Pyros V", "Pyros VI", "Pyros VII", "Pyros VIII"];
+        const eosMonths = ["Vernalis", "Floralis", "Solaris", "Emberis", "Torralis", "Zephyria", "Ventaris", "Nocturnis", "Lunaris", "Frigidis", "Aequoris", "Harmonis / Equinoxis"];
+        const astraeaMonths = ["Zyphirion", "Ciryona", "Thymeris", "Veldrion", "Orivann", "Saeltris", "Vaelthora", "Drenmaris", "Umbracil", "Kytheris", "Nivralis", "Eldrinor", "Ossivane", "Voryndal", "Xantheos"];
+        const cryonMonths = ["Cryon I", "Cryon II", "Cryon III", "Cryon IV", "Cryon V", "Cryon VI", "Cryon VII", "Cryon VIII", "Cryon IX", "Cryon X", "Cryon XI", "Cryon XII", "Cryon XIII", "Cryon XIV", "Cryon XV", "Cryon XVI", "Cryon XVII", "Cryon XVIII", "Cryon XIX", "Cryon XX"];
+        const glaciusMonths = ["Glacius I", "Glacius II", "Glacius III", "Glacius IV", "Glacius V", "Glacius VI", "Glacius VII", "Glacius VIII", "Glacius IX", "Glacius X", "Glacius XI", "Glacius XII", "Glacius XIII", "Glacius XIV", "Glacius XV", "Glacius XVI", "Glacius XVII", "Glacius XVIII", "Glacius XIX", "Glacius XX", "Glacius XXI", "Glacius XXII", "Glacius XXIII", "Glacius XXIV", "Glacius XXV", "Glacius XXVI"];
+        const weekDays = ["Solis", "Lunis", "Terris", "Aeris", "Aquis", "Ignis"];
+        let currentYear = 0;
+        let currentMonth = 0;
+
+        function updateCalendars() {
+            let totalMonths = (currentYear * 12) + currentMonth;
+            let ignisYear = Math.floor(totalMonths / 5);
+            let ignisMonth = totalMonths % 5;
+            let pyrosYear = Math.floor(totalMonths / 8);
+            let pyrosMonth = totalMonths % 8;
+            let eosYear = Math.floor(totalMonths / 12);
+            let eosMonth = totalMonths % 12;
+            let astraeaYear = Math.floor(totalMonths / 15);
+            let astraeaMonth = totalMonths % 15;
+            let cryonYear = Math.floor(totalMonths / 20);
+            let cryonMonth = totalMonths % 20;
+            let glaciusYear = Math.floor(totalMonths / 26);
+            let glaciusMonth = totalMonths % 26;
+
+            document.getElementById("yearInput1").value = ignisYear;
+            document.getElementById("monthInput1").value = ignisMonth + 1;
+            document.getElementById("yearInput2").value = pyrosYear;
+            document.getElementById("monthInput2").value = pyrosMonth + 1;
+            document.getElementById("yearInput3").value = eosYear;
+            document.getElementById("monthInput3").value = eosMonth + 1;
+            document.getElementById("yearInput4").value = astraeaYear;
+            document.getElementById("monthInput4").value = astraeaMonth + 1;
+            document.getElementById("yearInput5").value = cryonYear;
+            document.getElementById("monthInput5").value = cryonMonth + 1;
+            document.getElementById("yearInput6").value = glaciusYear;
+            document.getElementById("monthInput6").value = glaciusMonth + 1;
+
+            document.getElementById("ignis-month-year").innerText = `Month ${ignisMonth + 1} | Year ${ignisYear}`;
+            document.getElementById("pyros-month-year").innerText = `Month ${pyrosMonth + 1} | Year ${pyrosYear}`;
+            document.getElementById("eos-month-year").innerText = `Month ${eosMonth + 1} | Year ${eosYear}`;
+            document.getElementById("astraea-month-year").innerText = `Month ${astraeaMonth + 1} | Year ${astraeaYear}`;
+            document.getElementById("cryon-month-year").innerText = `Month ${cryonMonth + 1} | Year ${cryonYear}`;
+            document.getElementById("glacius-month-year").innerText = `Month ${glaciusMonth + 1} | Year ${glaciusYear}`;
+            document.getElementById("ignis-month-name").innerText = ignisMonths[ignisMonth];
+            document.getElementById("pyros-month-name").innerText = pyrosMonths[pyrosMonth];
+            document.getElementById("eos-month-name").innerText = eosMonths[eosMonth];
+            document.getElementById("astraea-month-name").innerText = astraeaMonths[astraeaMonth];
+            document.getElementById("cryon-month-name").innerText = cryonMonths[cryonMonth];
+            document.getElementById("glacius-month-name").innerText = glaciusMonths[glaciusMonth];
+            document.getElementById("ignis-weekdays").innerHTML = weekDays.map(day => `<div>${day}</div>`).join('');
+            document.getElementById("pyros-weekdays").innerHTML = weekDays.map(day => `<div>${day}</div>`).join('');
+            document.getElementById("eos-weekdays").innerHTML = weekDays.map(day => `<div>${day}</div>`).join('');
+            document.getElementById("astraea-weekdays").innerHTML = weekDays.map(day => `<div>${day}</div>`).join('');
+            document.getElementById("cryon-weekdays").innerHTML = weekDays.map(day => `<div>${day}</div>`).join('');
+            document.getElementById("glacius-weekdays").innerHTML = weekDays.map(day => `<div>${day}</div>`).join('');
+            generateDays("ignis-days");
+            generateDays("pyros-days");
+            generateDays("eos-days");
+            generateDays("astraea-days");
+            generateDays("cryon-days");
+            generateDays("glacius-days");
+        }
+
+        function generateDays(containerId) {
+            let container = document.getElementById(containerId);
+            container.innerHTML = "";
+            for (let i = 1; i <= 30; i++) {
+                let dayElement = document.createElement("div");
+                dayElement.classList.add("day");
+                dayElement.innerText = i;
+                container.appendChild(dayElement);
+            }
+        }
+
+        function changeMonth(offset, calendar) {
+            currentMonth += offset;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            } else if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            if (currentYear < 0) {
+                currentYear = 0;
+                currentMonth = 0;
+            }
+            updateCalendars();
+        }
+
+        function setDate(calendar) {
+            let yearInput, monthInput, monthsPerYear;
+            switch (calendar) {
+            case 'ignis':
+            yearInput = document.getElementById("yearInput1").value;
+            monthInput = document.getElementById("monthInput1").value;
+            monthsPerYear = 5;
+            break;
+            case 'pyros':
+            yearInput = document.getElementById("yearInput2").value;
+            monthInput = document.getElementById("monthInput2").value;
+            monthsPerYear = 8;
+            break;
+            case 'eos':
+            yearInput = document.getElementById("yearInput3").value;
+            monthInput = document.getElementById("monthInput3").value;
+            monthsPerYear = 12;
+            break;
+            case 'astraea':
+            yearInput = document.getElementById("yearInput4").value;
+            monthInput = document.getElementById("monthInput4").value;
+            monthsPerYear = 15;
+            break;
+            case 'cryon':
+            yearInput = document.getElementById("yearInput5").value;
+            monthInput = document.getElementById("monthInput5").value;
+            monthsPerYear = 20;
+            break;
+            case 'glacius':
+            yearInput = document.getElementById("yearInput6").value;
+            monthInput = document.getElementById("monthInput6").value;
+            monthsPerYear = 26;
+            break;
+            }
+            let totalMonths = (parseInt(yearInput) * monthsPerYear) + (parseInt(monthInput) - 1);
+            currentYear = Math.floor(totalMonths / 12);
+            currentMonth = totalMonths % 12;
+            if (currentYear < 0) {
+                currentYear = 0;
+                currentMonth = 0;
+            }
+            updateCalendars();
+        }
+
+        updateCalendars();
+    </script>
+</body>
+</html>
